@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ready for Takeoff — Aircraft Mass Game</title><link rel="stylesheet" href="style.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ready for Takeoff — Aircraft Mass Game</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="advanced.css"></head>
 <body>
 <div class="app">
   <header class="topbar"><a class="brand" href="index.html" aria-label="Ready for Takeoff home"><span class="brand-icon">↗</span><span>FLIGHT LAB <small>AIRCRAFT MASS GAME</small></span></a><div class="header-right"><span class="offline"><i></i> Offline ready</span><button id="restart" class="quiet">Restart</button></div></header>
@@ -40,5 +40,5 @@
   </section>
   <aside class="mass-column"><section class="card mass-card"><div class="section-label"><span>MASS BOARD</span><span>kg</span></div><p class="small muted">Calculated values · watch what changes</p><div id="mass-board"></div><div class="fuel-plan"><h3>Fuel plan</h3><div id="fuel-plan"></div></div></section><section id="limits-card" class="card" hidden><div class="section-label"><span>MASS LIMITS</span><span class="badge">TRAINING</span></div><div id="limits"></div></section><details class="card reference"><summary>How the masses connect</summary><p>Plain-English help based on your uploaded diagram.</p><p>BEM + crew and operating items = DOM<br>DOM + takeoff fuel = OM<br>DOM + Traffic Load = ZFM<br>Traffic Load + takeoff fuel = Useful Load<br>DOM + Useful Load = TOM<br>TOM + start and taxi fuel = Taxi Mass<br>TOM − trip fuel = LM</p><p>A calculated mass is not a limit. ZFM is a value. MZFM is its maximum permitted value.</p><p>The uploaded text calls Traffic Load the revenue-generating load, originally called “payload”. It defines Useful Load as Traffic Load plus takeoff fuel.</p><p>Some full definitions are referred to CAP 696 in your text, but are not included in the upload. The short descriptions here are teaching summaries, not quotations from CAP 696. ZFM, TOM, and LM names are expanded from your requested terms.</p><a href="assets/source-diagram.png" target="_blank" rel="noopener">Open your mass diagram ↗</a><a href="assets/source-definitions.png" target="_blank" rel="noopener">Open your source text ↗</a></details></aside>
   </main><footer>Training game only. Fictional aircraft, loads, fuel, and limits. Not for real flight planning.<span>LOCAL / NO ACCOUNT / NO INTERNET</span></footer>
-</div><script src="js/data.js"></script><script src="js/core.js"></script><script src="js/game.js"></script>
+</div><script src="js/data.js"></script><script src="js/core.js"></script><script src="js/lessons.js"></script><script src="js/game.js"></script>
 </body></html>

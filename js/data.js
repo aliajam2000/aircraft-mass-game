@@ -43,6 +43,11 @@
         hide: ['zfm'], answer: 5500, explanation: 'Cargo is Traffic Load. ZFM and total mass both rise by 100 kg.' }
     ]
   };
+  data.missions.push(
+    {name:'03 / Takeoff limit',text:'Carry 6 passengers and bags, plus 200 kg cargo. Keep 600 kg takeoff fuel. Remove extra load to pass MTOM.',minPassengers:6,minBags:6,minCargo:200,requiredFuel:600,tripFuel:400,limits:{zfm:5800,tom:5900,taxiMass:6000,lm:5600},initial:{crew:2,items:200,passengers:6,bags:6,cargo:500,takeoffFuel:600,taxiFuel:50}},
+    {name:'04 / Landing limit',text:'Carry 4 passengers and bags, plus 300 kg cargo. Keep 800 kg takeoff fuel. Check MLM as well as MTOM.',minPassengers:4,minBags:4,minCargo:300,requiredFuel:800,tripFuel:400,limits:{zfm:5700,tom:6500,taxiMass:6600,lm:5600},initial:{crew:2,items:200,passengers:4,bags:4,cargo:700,takeoffFuel:800,taxiFuel:50}},
+    {name:'05 / All limits',text:'Carry 8 passengers and bags, plus 100 kg cargo. Keep 700 kg takeoff fuel. All four limits must pass.',minPassengers:8,minBags:8,minCargo:100,requiredFuel:700,tripFuel:500,limits:{zfm:5400,tom:6000,taxiMass:6100,lm:5500},initial:{crew:2,items:200,passengers:8,bags:8,cargo:400,takeoffFuel:900,taxiFuel:50}}
+  );
   root.MassData = data;
   if (typeof module !== 'undefined') module.exports = data;
 })(typeof window !== 'undefined' ? window : globalThis);

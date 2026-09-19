@@ -33,7 +33,7 @@
       const value=isHidden(k)?'?':k==='lm'&&!validLanding?'—':format(a[k]);
       return '<div class="mass-row '+(['zfm','tom','lm'].includes(k)?'major ':'')+(changed?'changed':'')+'"><span class="abbr">'+v[0]+'<span class="status">'+phaseLabel(k)+'</span></span><span class="mass-value">'+value+'</span><small>'+v[1]+'</small><small>'+v[2]+(k==='lm'&&!validLanding?' · Add trip fuel first.':'')+'</small></div>';
     }).join(''));
-    previous=a;
+    window.dispatchEvent(new CustomEvent('mass-render',{detail:{state,values:a,previous}})); previous=a;
     html('fuel-plan',pair('Ramp fuel loaded',kg(a.rampFuel))+pair('Start and taxi fuel',kg(state.loads.taxiFuel))+pair('Takeoff fuel loaded',kg(state.loads.takeoffFuel))+pair('Trip fuel planned',kg(state.tripFuel))+pair('Fuel at landing'+(state.stage==='land'?'':' · planned'),validLanding?kg(a.landingFuel):'Need fuel')+pair('Fuel used so far',kg(a.taxiBurn+a.tripBurn)));
     const running=(state.stage==='taxi'&&state.taxiProgress<1)||(state.stage==='fly'&&state.flightProgress<1);
     $('scene').className='scene '+state.stage+(running?' running':'');
@@ -127,6 +127,7 @@
   $('controls').addEventListener('click',e=>{
     const b=e.target.closest('[data-load]'); if(!b) return;
     const k=b.dataset.load;
+    if(window.MassLessons && !window.MassLessons.allow(state,k,Number(b.dataset.dir))) return;
     if(C.change(state,k,Number(b.dataset.dir))) {
       tell(k.includes('Fuel')?'Fuel changes total mass. It does not change ZFM.':k==='crew'||k==='items'?'Crew and operating items build DOM. They are not Traffic Load.':'Passengers, bags, and cargo are Traffic Load. They change ZFM and total mass.');
       render();
@@ -138,6 +139,7 @@
     if(state.mode==='practice' && !state.solved) { tell('Try again. Use the formula on the mass board.'); render(); $('answer-input')?.focus(); }
     else reset();
   });
+  $('mission-select').innerHTML=D.missions.map((m,i)=>'<option value="'+i+'">'+m.name+'</option>').join('');
   $('mission-select').addEventListener('change',e=>reset('mission',Number(e.target.value)));
   $('next').addEventListener('click',()=>{
     const before=state.stage;
