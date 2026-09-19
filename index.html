@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ready for Takeoff — Aircraft Mass Game</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="app">
+  <header class="topbar"><a class="brand" href="index.html" aria-label="Ready for Takeoff home"><span class="brand-icon">↗</span><span>FLIGHT LAB <small>AIRCRAFT MASS GAME</small></span></a><div class="header-right"><span class="offline"><i></i> Offline ready</span><button id="restart" class="quiet">Restart</button></div></header>
+  <div class="title-row"><div><p class="eyebrow">YOUR AIRCRAFT. YOUR LOAD. YOUR FLIGHT.</p><h1>Ready for Takeoff<span>— Aircraft Mass Game</span></h1><p class="subtitle">Build the mass. Check the limits. Take to the sky.</p></div><div class="score"><small>FLIGHT POINTS</small><strong id="score">0</strong></div></div>
+  <nav class="modes" aria-label="Game mode"><button data-mode="learn" class="active">01 <b>Learn</b><span>Your first flight</span></button><button data-mode="practice">02 <b>Practice</b><span>Test what you know</span></button><button data-mode="mission">03 <b>Mission</b><span>Clear the limits</span></button></nav>
+  <ol id="stages" class="stages" aria-label="Flight stages"></ol>
+  <main class="layout"><section class="flight-column">
+    <section class="scene-card" aria-label="Aircraft and load view"><div class="scene-top"><div><span class="eyebrow">TRAINING AIRCRAFT / RF–01</span><h2 id="scene-title">At the stand</h2></div><span id="stage-badge" class="badge">PREPARE</span></div>
+      <div id="scene" class="scene"><svg viewBox="0 0 1000 370" role="img" aria-labelledby="aircraft-title aircraft-desc"><title id="aircraft-title">Aircraft side view</title><desc id="aircraft-desc">Twelve passenger seats, two crew seats, bags, cargo boxes, and a fuel tank.</desc>
+        <defs><linearGradient id="body" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#d9e5ef"/></linearGradient><linearGradient id="tank" x2="1"><stop stop-color="#12a893"/><stop offset="1" stop-color="#6ad7ba"/></linearGradient></defs>
+        <g class="clouds" fill="#fff" opacity=".55"><path d="M50 64h130q-6-28-34-20-18-35-46-4-35-12-50 24"/><path d="M690 46h120q-14-24-36-16-21-32-40-7-29-9-44 23"/></g>
+        <g class="airport" fill="#a6bac5"><path d="M0 279h100v-34h45v34h510v-29h60v29h180v-38h70v38h35v55H0z"/><path d="M743 278v-96h24v96zm-16-96h55v-24h-55z"/></g>
+        <g class="ground"><path d="M0 309h1000v61H0z" fill="#aab9bc"/><path d="M0 319h1000v51H0z" fill="#445560"/><path class="runway-dashes" d="M-100 347h100M80 347h100M260 347h100M440 347h100M620 347h100M800 347h100M980 347h100" stroke="#f1eac7" stroke-width="5"/></g>
+        <g id="plane">
+          <ellipse cx="493" cy="307" rx="362" ry="9" fill="#213b52" opacity=".12"/>
+          <path d="M190 175 103 63H67l24 139z" fill="#153c52"/><path d="M108 139 84 82h13l46 57" fill="#41c5a9"/>
+          <g class="wheels" stroke="#526679" stroke-width="8"><path d="M322 259v34m419-43v43"/><circle cx="322" cy="298" r="11" fill="#172d3c"/><circle cx="741" cy="298" r="11" fill="#172d3c"/></g>
+          <path d="M83 170q-24 26 11 44l141 37 506 7q92-1 160-34 28-15-4-37l-70-43q-27-15-65-15H282z" fill="url(#body)" stroke="#78909f" stroke-width="2"/>
+          <path d="M101 212 744 244q78 0 143-29" fill="none" stroke="#22af98" stroke-width="7"/>
+          <path d="M808 143 851 173h-42l-23-30zM778 143l23 30h-21l-15-30z" fill="#254b62"/>
+          <rect x="281" y="143" width="424" height="71" rx="13" fill="#d6e4ec" stroke="#a6bcc9"/>
+          <g id="seats"></g><g id="crew"></g>
+          <rect x="307" y="219" width="162" height="30" rx="5" fill="#b9cedb"/>
+          <g id="bags"></g><rect x="477" y="219" width="159" height="30" rx="5" fill="#b9cedb"/><g id="cargo"></g>
+          <path d="m454 259 99 39h89l-50-40" fill="#748c9b" stroke="#597181"/>
+          <rect x="490" y="257" width="91" height="25" rx="12" fill="#dae6ed" stroke="#7f97a7"/><ellipse cx="579" cy="269" rx="8" ry="11" fill="#355468"/>
+          <text x="194" y="192" font-size="15" font-weight="800" fill="#1b4a61">RF–01</text>
+          <g id="operating-items"></g>
+        </g>
+        <g class="ground-labels" font-family="Arial,sans-serif" fill="#355268" font-size="12"><text x="291" y="111">CABIN · 12 SEATS</text><text x="513" y="111">BAGS + CARGO BELOW</text></g>
+      </svg></div>
+      <div class="scene-footer"><div><span class="tiny-label">PASSENGERS</span><strong id="seat-count">0 / 12</strong></div><div class="fuel-widget"><div><span class="tiny-label">FUEL ON BOARD</span><strong id="fuel-onboard">0 kg</strong></div><div class="tank-bar"><i id="fuel-fill"></i></div><small>Tank capacity: 1,250 kg</small></div><div class="current"><span class="tiny-label">CURRENT MASS</span><strong id="current-mass">4,000 <small>kg</small></strong></div></div>
+    </section>
+    <section class="task card"><div class="section-label"><span id="task-label">FLIGHT GUIDE</span><span id="task-count">01 / 06</span></div><div id="mission-select-wrap" hidden><label for="mission-select">Choose a mission</label><select id="mission-select"><option value="0">01 / The ZFM trap</option><option value="1">02 / Cargo run</option></select></div><h2 id="task-title"></h2><p id="task-text"></p><div id="targets" class="targets"></div><div id="quiz"></div><div id="feedback" class="feedback" role="status" aria-live="polite"></div><div id="checks"></div><div class="action-row"><button id="next" class="primary">Next: Load</button><button id="try-again" class="quiet">Try Again</button><span id="action-help"></span></div></section>
+    <section class="card" id="controls-card"><div class="section-label"><span>LOAD YOUR AIRCRAFT</span><span id="load-lock">AT THE STAND</span></div><p class="control-note">Passengers: 80 kg each, without bags. Bags: 20 kg each. All values are training examples.</p><div id="controls" class="controls"></div></section>
+    <section id="summary" class="card" hidden></section>
+  </section>
+  <aside class="mass-column"><section class="card mass-card"><div class="section-label"><span>MASS BOARD</span><span>kg</span></div><p class="small muted">Calculated values · watch what changes</p><div id="mass-board"></div><div class="fuel-plan"><h3>Fuel plan</h3><div id="fuel-plan"></div></div></section><section id="limits-card" class="card" hidden><div class="section-label"><span>MASS LIMITS</span><span class="badge">TRAINING</span></div><div id="limits"></div></section><details class="card reference"><summary>How the masses connect</summary><p>Plain-English help based on your uploaded diagram.</p><p>BEM + crew and operating items = DOM<br>DOM + takeoff fuel = OM<br>DOM + Traffic Load = ZFM<br>Traffic Load + takeoff fuel = Useful Load<br>DOM + Useful Load = TOM<br>TOM + start and taxi fuel = Taxi Mass<br>TOM − trip fuel = LM</p><p>A calculated mass is not a limit. ZFM is a value. MZFM is its maximum permitted value.</p><p>The uploaded text calls Traffic Load the revenue-generating load, originally called “payload”. It defines Useful Load as Traffic Load plus takeoff fuel.</p><p>Some full definitions are referred to CAP 696 in your text, but are not included in the upload. The short descriptions here are teaching summaries, not quotations from CAP 696. ZFM, TOM, and LM names are expanded from your requested terms.</p><a href="assets/source-diagram.png" target="_blank" rel="noopener">Open your mass diagram ↗</a><a href="assets/source-definitions.png" target="_blank" rel="noopener">Open your source text ↗</a></details></aside>
+  </main><footer>Training game only. Fictional aircraft, loads, fuel, and limits. Not for real flight planning.<span>LOCAL / NO ACCOUNT / NO INTERNET</span></footer>
+</div><script src="js/data.js"></script><script src="js/core.js"></script><script src="js/game.js"></script>
+</body></html>
