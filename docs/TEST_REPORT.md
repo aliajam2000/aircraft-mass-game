@@ -49,3 +49,13 @@ For an ordinary development machine, install the listed devDependencies and `npx
 ## Production
 
 Local validation completed before publishing. Production verification is recorded below after the GitHub Pages build; a repository commit alone is not sufficient evidence of deployment.
+
+### Verified public release
+
+- Runtime release commit: `334a93886756b9408cc599bfe640ddb617095dc1` on `main`.
+- Existing Pages build [37902530236](https://github.com/aliajam2000/aircraft-mass-game/actions/runs/37902530236): completed successfully.
+- Verified URL: https://aliajam2000.github.io/aircraft-mass-game/ . HTTP 200; title `Aircraft Mass Game 2.0 | Flight Lab`; bundled v2 scripts and CSS loaded.
+- At 2026-10-09T08:06Z the complete browser suite also passed against the **publicly deployed** game: all 10 safe mission routes, five viewport sizes, loading and keyboard controls, touch, what-if, source images, navigation, persistence/blocked storage/corrupt storage, with no page-script or failed asset responses.
+- A temporary cache-busting query was used to avoid a stale pre-release HTML response while retaining the same public game path. The browser required the execution environment's HTTPS proxy and its TLS test override; these settings affect only the test harness, not the game or users' connections. Test options `BROWSER_PROXY`, `QA_PROXY_TLS` and `CACHE_BUST` make that environment-specific run reproducible. No authentication or user credential was used.
+- Downloaded-file check: opened local `index.html` in an offline Chromium context, boarded a passenger and bag, observed TOM 5100 kg, and detected no page errors.
+- A documentation/test-harness-only follow-up records these results; runtime source remains the tested release above.

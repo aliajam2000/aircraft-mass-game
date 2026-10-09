@@ -38,10 +38,12 @@ const { chromium } = require("playwright");
   await new Promise((r) => server.listen(0, "127.0.0.1", r));
   const local = `http://127.0.0.1:${server.address().port}/aircraft-mass-game/`;
   const base = process.env.GAME_URL || local;
+  const entry = process.env.CACHE_BUST ? base + '?verify=' + encodeURIComponent(process.env.CACHE_BUST) : base;
   let browser;
   try {
     browser = await chromium.launch({
       headless: true,
+      proxy: process.env.BROWSER_PROXY ? {server: process.env.BROWSER_PROXY} : undefined,
       executablePath: process.env.CHROMIUM_PATH || undefined,
       args: process.env.CHROMIUM_ARGS_MODULE
         ? require(process.env.CHROMIUM_ARGS_MODULE).args.filter(
@@ -49,9 +51,10 @@ const { chromium } = require("playwright");
           )
         : ["--no-sandbox"],
     });
+    const createContext = (options = {}) => browser.newContext({...options, ignoreHTTPSErrors: process.env.QA_PROXY_TLS === '1'});
     const errors = [],
       badAssets = [];
-    const context = await browser.newContext({
+    const context = await createContext({
       viewport: { width: 1440, height: 1000 },
     });
     const p = await context.newPage();
@@ -59,7 +62,7 @@ const { chromium } = require("playwright");
     p.on("response", (r) => {
       if (r.status() >= 400) badAssets.push(r.url() + ": " + r.status());
     });
-    await p.goto(base);
+    await p.goto(entry);
     assert.match(await p.title(), /2.0/);
     const state = () => p.evaluate(() => FlightLab.getState());
     const set = async (k, n) => {
@@ -208,7 +211,7 @@ const { chromium } = require("playwright");
         fullPage: true,
       });
     }
-    const blocked = await browser.newContext();
+    const blocked = await createContext();
     await blocked.addInitScript(() =>
       Object.defineProperty(window, "localStorage", {
         get() {
@@ -217,27 +220,27 @@ const { chromium } = require("playwright");
       }),
     );
     const bp = await blocked.newPage();
-    await bp.goto(base);
+    await bp.goto(entry);
     await bp.locator("#quick-board").click();
     assert.match(await bp.locator("#save-status").textContent(), /unavailable/);
     assert.match(await bp.locator("#tom").textContent(), /5,100/);
     await blocked.close();
-    const corrupt = await browser.newContext();
+    const corrupt = await createContext();
     await corrupt.addInitScript(() =>
       localStorage.setItem("flightlab-mass-v2", "{bad json"),
     );
     const cp = await corrupt.newPage();
-    await cp.goto(base);
+    await cp.goto(entry);
     await cp.locator("#quick-board").click();
     assert.match(await cp.locator("#tom").textContent(), /5,100/);
     await corrupt.close();
-    const touch = await browser.newContext({
+    const touch = await createContext({
       viewport: { width: 390, height: 844 },
       hasTouch: true,
       isMobile: true,
     });
     const tp = await touch.newPage();
-    await tp.goto(base);
+    await tp.goto(entry);
     await tp.locator("#quick-board").tap();
     assert.equal(await tp.evaluate(() => FlightLab.getState().load.front), 1);
     await touch.close();
