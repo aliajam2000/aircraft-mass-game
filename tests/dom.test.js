@@ -5,7 +5,7 @@ const assert=require('node:assert/strict');
 (async()=>{
   const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));
   let now=0,nextId=0,frames=new Map();
-  const dom=await JSDOM.fromFile(path.resolve(__dirname,'../index.html'),{
+  const dom=await JSDOM.fromFile(path.resolve(__dirname,'../classic.html'),{
     runScripts:'dangerously',resources:'usable',pretendToBeVisual:true,virtualConsole:vc,
     beforeParse(w){w.requestAnimationFrame=f=>{frames.set(++nextId,f);return nextId;};w.cancelAnimationFrame=id=>frames.delete(id);Object.defineProperty(w.performance,'now',{value:()=>now});}
   });

@@ -1,0 +1,15 @@
+{
+  "name": "flightlab-aircraft-mass-game",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Source-preserved Oxford mass training with fictional RF-01 missions",
+  "scripts": {
+    "test": "node tests/core.test.js && node tests/advanced.test.js && node --test tests/v2.test.js",
+    "test:dom": "node tests/dom.test.js && node tests/lessons.test.js",
+    "test:browser": "node tests/v2-browser.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "26.0.0",
+    "playwright": "1.62.1"
+  }
+}

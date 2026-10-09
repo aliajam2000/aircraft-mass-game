@@ -10,7 +10,7 @@ const assert=require('node:assert/strict');
   const page=await context.newPage(),errors=[],external=[];
   page.on('pageerror',e=>errors.push(e.message));
   page.on('request',r=>{if(/^https?:/.test(r.url()))external.push(r.url());});
-  await page.goto(pathToFileURL(path.resolve(__dirname,'../index.html')).href);
+  await page.goto(pathToFileURL(path.resolve(__dirname,'../classic.html')).href);
   const add=async(k,n)=>{for(let i=0;i<n;i++)await page.locator(`[data-load="${k}"][data-dir="1"]`).click();};
   const mass=async k=>page.locator('.mass-row').filter({has:page.locator('.abbr',{hasText:new RegExp('^'+k+'(?:Planned|At|$)')})}).locator('.mass-value').textContent();
   assert.equal(await page.title(),'Ready for Takeoff — Aircraft Mass Game');
