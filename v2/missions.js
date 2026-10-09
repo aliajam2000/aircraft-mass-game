@@ -1,0 +1,161 @@
+(function (root) {
+  "use strict";
+  const A = root.RF01 || require("./aircraft.js");
+  const rows = [
+    [
+      "Your First Load",
+      "Passengers are waiting at North Quay. Add two passengers and their bags, then prepare RF–01 for its first departure.",
+      ["DOM", "Traffic Load", "TOM"],
+      { front: 0, rear: 0, bagsFront: 0, bagsRear: 0 },
+      { pax: 2 },
+      {},
+    ],
+    [
+      "One Passenger Too Many",
+      "Eleven passengers are aboard. A twelfth asks to join. Compare the 6,100 kg dispatch cap before accepting.",
+      ["TOM", "MTOM"],
+      { front: 6, rear: 5, bagsFront: 6, bagsRear: 5, fuel: 600 },
+      { pax: 10 },
+      { tom: 6100, event: "late-request" },
+    ],
+    [
+      "The Fuel Dilemma",
+      "The island sector needs 650 kg trip fuel. Keep the reserve while carrying eight passengers; surplus cargo can wait.",
+      ["Useful Load", "OM", "ZFM"],
+      {
+        front: 4,
+        rear: 4,
+        bagsFront: 4,
+        bagsRear: 4,
+        cargoFront: 200,
+        cargoRear: 200,
+        fuel: 500,
+      },
+      { pax: 8 },
+      { trip: 650 },
+    ],
+    [
+      "Baggage in the Wrong Place",
+      "Six passengers sit aft; their group baggage and a 400 kg consignment are also in the aft hold. Move baggage forward while retaining the freight.",
+      ["Moment", "CG", "Traffic Load"],
+      { front: 0, rear: 6, bagsFront: 0, bagsRear: 12, cargoRear: 400 },
+      { pax: 6, cargo: 400 },
+      {},
+    ],
+    [
+      "The Short Runway",
+      "Harbour strip has only 650 m available. Test the lightest permitted load, then arrange the longer runway or choose no-go.",
+      ["TOM", "MTOM"],
+      {
+        front: 4,
+        rear: 4,
+        bagsFront: 4,
+        bagsRear: 4,
+        cargoFront: 200,
+        cargoRear: 200,
+      },
+      { pax: 4 },
+      { runway: 650 },
+    ],
+    [
+      "Hot and High",
+      "At Ridge Field, pressure altitude is 1,800 m and temperature is 35°C. Protect takeoff and climb margins.",
+      ["TOM", "Useful Load"],
+      {
+        front: 5,
+        rear: 5,
+        bagsFront: 5,
+        bagsRear: 5,
+        cargoFront: 100,
+        cargoRear: 100,
+      },
+      { pax: 2 },
+      { runway: 1100, altitude: 1800, temp: 35 },
+    ],
+    [
+      "The Last-minute Passenger",
+      "Your first check will be followed by a confirmed passenger and bag change. Update the loadsheet and check again.",
+      ["Traffic Load", "ZFM", "TOM"],
+      { front: 4, rear: 4, bagsFront: 4, bagsRear: 4 },
+      { pax: 8 },
+      { event: "late-confirmed" },
+    ],
+    [
+      "Return to Base",
+      "A cabin fault after climb requires an early return. A light planned landing does not guarantee a light return.",
+      ["LM", "MLM", "Trip fuel"],
+      {
+        front: 4,
+        rear: 4,
+        bagsFront: 4,
+        bagsRear: 4,
+        cargoFront: 100,
+        cargoRear: 100,
+        fuel: 1000,
+      },
+      { pax: 8 },
+      { trip: 500, event: "return" },
+    ],
+    [
+      "The Unreported Cargo",
+      "The manifest and a hold seal disagree. Verify the actual cargo before signing the release.",
+      ["Traffic Load", "ZFM", "Taxi Mass"],
+      { front: 4, rear: 4, bagsFront: 4, bagsRear: 4, cargoFront: 100 },
+      { pax: 8 },
+      { event: "cargo", tom: 6000 },
+    ],
+    [
+      "Captain’s Final Decision",
+      "Coastal heat, a short runway and a busy cabin. After departure, a route extension will change your arrival fuel. Plan, reassess, and defend your decision.",
+      ["TOM", "LM", "CG", "Useful Load"],
+      {
+        front: 5,
+        rear: 5,
+        bagsFront: 5,
+        bagsRear: 5,
+        cargoFront: 100,
+        cargoRear: 100,
+        fuel: 700,
+      },
+      { pax: 6 },
+      { runway: 900, altitude: 600, temp: 30, trip: 500, event: "extension" },
+    ],
+  ];
+  const missions = rows.map((r, i) => ({
+    id: i + 1,
+    title: r[0],
+    narrative: r[1],
+    concepts: r[2],
+    initial: { ...A.base, ...r[3] },
+    objectives: { pax: 0, cargo: 0, ...r[4] },
+    conditions: {
+      runway: 1400,
+      landingRunway: 1200,
+      altitude: 0,
+      temp: 15,
+      trip: 400,
+      ...r[5],
+    },
+    actions: [
+      "load",
+      "check",
+      "dispatch",
+      "cancel",
+      "long-runway",
+      "divert",
+      "hold",
+      "review",
+      "restart",
+    ],
+    success:
+      "Land within all mandatory mass, CG, runway and reserve constraints with the required traffic, or record a justified safe no-go/diversion separately.",
+    failure:
+      "Dispatch is blocked for unsafe loads. An in-flight unresolved reserve, landing or fuel deficit prevents mission completion.",
+    recovery:
+      "Correct loads or fuel, redistribute holds, select a longer runway, cancel safely; when airborne divert or hold only with sufficient fuel.",
+    debrief:
+      "Compare actual masses, station moments, fuel consumed, limits and decisions in the recorded timeline.",
+  }));
+  root.MassMissions = missions;
+  if (typeof module !== "undefined") module.exports = missions;
+})(typeof window !== "undefined" ? window : globalThis);
